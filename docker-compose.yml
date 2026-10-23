@@ -1,0 +1,190 @@
+# Solar Park Watchman - Multi-Container ICR Lab Topology
+version: "3.8"
+
+networks:
+  control_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24
+          gateway: 10.10.1.1
+  grid_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.2.0/24
+          gateway: 10.10.2.1
+
+services:
+  central:
+    image: python:3.12-slim
+    container_name: central
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -m central.app
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.5
+    ports:
+      - "8000:8000"
+
+  inverter-1:
+    image: python:3.12-slim
+    container_name: inverter-1
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.inverters import SolarInverter; inv=SolarInverter('inverter-1', port=502); inv.start(); import time; [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.11
+
+  inverter-2:
+    image: python:3.12-slim
+    container_name: inverter-2
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.inverters import SolarInverter; inv=SolarInverter('inverter-2', port=502); inv.start(); import time; [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.12
+
+  inverter-3:
+    image: python:3.12-slim
+    container_name: inverter-3
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.inverters import SolarInverter; inv=SolarInverter('inverter-3', port=502); inv.start(); import time; [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.13
+
+  plc:
+    image: python:3.12-slim
+    container_name: plc
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.plc import PlantPLC; plc=PlantPLC(port=502); plc.start(); import time; [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.20
+
+  weather:
+    image: python:3.12-slim
+    container_name: weather
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -m sim.weather
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.25
+
+  ppc:
+    image: python:3.12-slim
+    container_name: ppc
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -m sim.ppc
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.30
+    depends_on:
+      - inverter-1
+      - inverter-2
+      - inverter-3
+
+  scada:
+    image: python:3.12-slim
+    container_name: scada
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -m sim.scada
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.10
+    depends_on:
+      - inverter-1
+      - inverter-2
+      - inverter-3
+      - plc
+
+  iec104-outstation:
+    image: python:3.12-slim
+    container_name: iec104-outstation
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.iec104 import IEC104Outstation; s=IEC104Outstation(port=2404); s.start(); import time; [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.40
+      grid_net:
+        ipv4_address: 10.10.2.40
+
+  grid-centre:
+    image: python:3.12-slim
+    container_name: grid-centre
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -c "from sim.iec104 import IEC104Client; import time; time.sleep(2); c=IEC104Client('10.10.2.40', 2404); c.connect(); [time.sleep(1) for _ in iter(int, 1)]"
+    networks:
+      grid_net:
+        ipv4_address: 10.10.2.10
+    depends_on:
+      - iec104-outstation
+
+  vendor-gw:
+    image: python:3.12-slim
+    container_name: vendor-gw
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: python -m sim.vendor_gw
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.50
+
+  attacker:
+    image: python:3.12-slim
+    container_name: attacker
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sleep infinity
+    networks:
+      control_net:
+        ipv4_address: 10.10.1.99
+
+  sensor:
+    image: python:3.12-slim
+    container_name: sensor
+    working_dir: /app
+    volumes:
+      - .:/app
+    network_mode: "host"
+    command: python -m sensor.engine
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    depends_on:
+      - central
+
+  dashboard:
+    image: python:3.12-slim
+    container_name: dashboard
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: streamlit run dashboard/app.py --server.port 8501 --server.headless true
+    ports:
+      - "8501:8501"
+    depends_on:
+      - sensor

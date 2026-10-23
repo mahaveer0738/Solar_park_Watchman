@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-10-23T16:31:29.001412+00:00",
+  "datasets": {
+    "CIC_Modbus_2023": {
+      "file_path": "data/external/cic_modbus_2023.pcap",
+      "status": "NOT RUN",
+      "reason": "Dataset archive not available locally in offline test environment. Download source: Canadian Institute for Cybersecurity (CIC).",
+      "packets_processed": 0,
+      "alerts_raised": 0
+    },
+    "Zenodo_IEC104": {
+      "file_path": "data/external/zenodo_iec104.pcap",
+      "status": "NOT RUN",
+      "reason": "Zenodo IEC 60870-5-104 capture archive not available locally. Download source: Zenodo DOI: 10.5281/zenodo.4660424.",
+      "packets_processed": 0,
+      "alerts_raised": 0
+    }
+  },
+  "pipeline_status": "Ready for offline PCAP ingestion via PassiveSensorCapture.ingest_pcap()"
+}

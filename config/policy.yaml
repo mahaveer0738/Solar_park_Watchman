@@ -1,0 +1,96 @@
+# Solar Park Watchman - Security Policy Configuration
+version: "1.0"
+plant_id: "ICR-GJ-WEST-01"
+
+# Approved Network Inventory
+inventory:
+  approved_devices:
+    - ip: "10.10.1.10"
+      mac: "02:42:0a:0a:01:0a"
+      role: "SCADA"
+      name: "scada"
+      description: "Plant Central SCADA Poller"
+    - ip: "10.10.1.11"
+      mac: "02:42:0a:0a:01:0b"
+      role: "Inverter"
+      name: "inverter-1"
+      description: "String Inverter 1 (1000 kW)"
+    - ip: "10.10.1.12"
+      mac: "02:42:0a:0a:01:0c"
+      role: "Inverter"
+      name: "inverter-2"
+      description: "String Inverter 2 (1000 kW)"
+    - ip: "10.10.1.13"
+      mac: "02:42:0a:0a:01:0d"
+      role: "Inverter"
+      name: "inverter-3"
+      description: "String Inverter 3 (1000 kW)"
+    - ip: "10.10.1.20"
+      mac: "02:42:0a:0a:01:14"
+      role: "PLC"
+      name: "plc"
+      description: "Plant Master PLC / Weather Aggregator"
+    - ip: "10.10.1.25"
+      mac: "02:42:0a:0a:01:19"
+      role: "WeatherSensor"
+      name: "weather"
+      description: "Pyranometer and Temperature Feed"
+    - ip: "10.10.1.30"
+      mac: "02:42:0a:0a:01:1e"
+      role: "PPC"
+      name: "ppc"
+      description: "Plant Power Controller (Sole authorized setpoint writer)"
+    - ip: "10.10.1.40"
+      mac: "02:42:0a:0a:01:28"
+      role: "IEC104_Outstation"
+      name: "iec104-outstation"
+      description: "Substation RTU IEC-104 Outstation"
+    - ip: "10.10.1.50"
+      mac: "02:42:0a:0a:01:32"
+      role: "Vendor_Gateway"
+      name: "vendor-gw"
+      description: "Solar Inverter OEM Remote Support Gateway"
+    - ip: "10.10.2.10"
+      mac: "02:42:0a:0a:02:0a"
+      role: "Grid_Master"
+      name: "grid-centre"
+      description: "Regional State Load Dispatch Centre (SLDC / Grid Master)"
+
+# Modbus Access Control Rules
+modbus:
+  inverter_ips:
+    - "10.10.1.11"
+    - "10.10.1.12"
+    - "10.10.1.13"
+  setpoint_register: 101
+  authorized_setpoint_writers:
+    - "10.10.1.30"  # PPC only
+
+# Vendor Remote Access Policy
+vendor_policy:
+  gateway_ip: "10.10.1.50"
+  approved_window:
+    start_hour: 10
+    end_hour: 16
+  allow_writes_in_window: true
+  allow_writes_out_window: false
+
+# IEC 60870-5-104 Policy
+iec104:
+  outstation_ip: "10.10.1.40"
+  authorized_masters:
+    - "10.10.2.10"
+  control_asdu_types:
+    - 45  # C_SC_NA_1 Single Command
+    - 46  # C_DC_NA_1 Double Command
+    - 50  # C_SE_NC_1 Set-point Command Short Float
+  critical_ioa: 1000  # Substation Breaker Point
+
+# Anomaly & Rate Limiting Thresholds
+thresholds:
+  iec104_max_packets_per_minute: 40
+  iec104_flood_multiplier: 10
+  recon_max_unique_registers_per_min: 50
+  recon_max_target_devices_per_min: 3
+  telemetry_frozen_minutes_threshold: 15
+  telemetry_irradiance_change_threshold: 50.0  # W/m^2 change while power remains identical

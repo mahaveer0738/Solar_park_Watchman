@@ -1,0 +1,21 @@
+{
+  "sensor_off": {
+    "total_polls": 200,
+    "successful_polls": 200,
+    "failed_polls": 0,
+    "success_rate_pct": 100.0,
+    "median_rtt_ms": 0.849,
+    "p95_rtt_ms": 1.654
+  },
+  "sensor_on": {
+    "total_polls": 200,
+    "successful_polls": 200,
+    "failed_polls": 0,
+    "success_rate_pct": 100.0,
+    "median_rtt_ms": 0.801,
+    "p95_rtt_ms": 1.331
+  },
+  "rtt_increase_ms": -0.323,
+  "poll_success_rate_impact": true,
+  "conclusion": "No impact on control traffic. Polling success remains 100% and passive capture introduces no packet interception delays."
+}

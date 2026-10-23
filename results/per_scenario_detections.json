@@ -1,0 +1,45 @@
+{
+  "S1": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 0.112
+  },
+  "S2": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 1.131
+  },
+  "S3": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 0.114
+  },
+  "S5": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 0.846
+  },
+  "S6": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 1.129
+  },
+  "S8": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 1.415
+  },
+  "S7": {
+    "runs": 5,
+    "detected": 5,
+    "detection_rate_pct": 100.0,
+    "median_latency_sec": 0.404,
+    "notes": "Unsupervised ML consistency check: flags invariant power output across shifting irradiance profiles"
+  }
+}

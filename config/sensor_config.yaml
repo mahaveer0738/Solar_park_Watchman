@@ -1,0 +1,13 @@
+# Solar Park Watchman - Sensor Engine Configuration
+sensor:
+  interface: "any"
+  pcap_dump_dir: "data/pcaps"
+  db_path: "data/inventory.db"
+  alerts_file: "runs/alerts.jsonl"
+  attack_log_file: "runs/attack_log.jsonl"
+  central_endpoint: "http://127.0.0.1:8000/api/alerts"
+  summary_endpoint: "http://127.0.0.1:8000/api/summary"
+  summary_interval_seconds: 300
+  ml_model_path: "data/isolation_forest.joblib"
+  policy_path: "config/policy.yaml"
+  store_and_forward_queue: "data/forward_queue.jsonl"

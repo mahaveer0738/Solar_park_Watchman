@@ -1,0 +1,1 @@
+"""Central Collector package."""

@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Process trackers
+runs/services.pid
+data/inventory.db-shm
+data/inventory.db-wal
+data/forward_queue.jsonl
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

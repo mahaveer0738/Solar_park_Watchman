@@ -1,0 +1,8 @@
+{
+  "total_alerts_forwarded": 619,
+  "total_bytes_sent": 256672,
+  "total_kb_sent": 250.66,
+  "kb_per_hour": 12031.29,
+  "design_target_kb_per_hour": "< 50 KB/hr",
+  "compliant_with_slow_links": false
+}

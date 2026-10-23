@@ -1,0 +1,137 @@
+{
+  "expected_devices_count": 9,
+  "discovered_devices_count": 9,
+  "coverage_pct": 100.0,
+  "expected_devices": [
+    "10.10.1.10",
+    "10.10.1.11",
+    "10.10.1.12",
+    "10.10.1.13",
+    "10.10.1.20",
+    "10.10.1.30",
+    "10.10.1.40",
+    "10.10.1.50",
+    "10.10.2.10"
+  ],
+  "discovered_devices": [
+    "10.10.1.10",
+    "10.10.1.12",
+    "10.10.2.10",
+    "10.10.1.11",
+    "10.10.1.13",
+    "10.10.1.50",
+    "10.10.1.40",
+    "10.10.1.30",
+    "10.10.1.20"
+  ],
+  "all_inventory_records": [
+    {
+      "ip": "10.10.1.10",
+      "mac": "02:42:0a:0a:01:0a",
+      "hostname": "scada",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "SCADA",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 8640,
+      "notes": "Discovered passively"
+    },
+    {
+      "ip": "10.10.1.11",
+      "mac": "02:42:0a:0a:01:0b",
+      "hostname": "inverter-1",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "Inverter",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2328,
+      "notes": "Target of observed session"
+    },
+    {
+      "ip": "10.10.1.12",
+      "mac": "02:42:0a:0a:01:0c",
+      "hostname": "inverter-2",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "Inverter",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2304,
+      "notes": "Target of observed session"
+    },
+    {
+      "ip": "10.10.1.13",
+      "mac": "02:42:0a:0a:01:0d",
+      "hostname": "inverter-3",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "Inverter",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2304,
+      "notes": "Target of observed session"
+    },
+    {
+      "ip": "10.10.1.20",
+      "mac": "02:42:0a:0a:01:14",
+      "hostname": "plc",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "PLC",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2160,
+      "notes": "Target of observed session"
+    },
+    {
+      "ip": "10.10.1.30",
+      "mac": "02:42:0a:0a:01:1e",
+      "hostname": "ppc",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "PPC",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:55:00+00:00",
+      "packet_count": 432,
+      "notes": "Discovered passively"
+    },
+    {
+      "ip": "10.10.1.40",
+      "mac": "02:42:0a:0a:01:28",
+      "hostname": "iec104-outstation",
+      "protocols": "IEC_104",
+      "inferred_role": "IEC104_Outstation",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2160,
+      "notes": "Discovered passively"
+    },
+    {
+      "ip": "10.10.1.50",
+      "mac": "02:42:0a:0a:01:32",
+      "hostname": "vendor-gw",
+      "protocols": "MODBUS_TCP",
+      "inferred_role": "Vendor_Gateway",
+      "approved": 1,
+      "first_seen": "2026-10-23T10:00:00+00:00",
+      "last_seen": "2026-10-23T15:45:00+00:00",
+      "packet_count": 24,
+      "notes": "Discovered passively"
+    },
+    {
+      "ip": "10.10.2.10",
+      "mac": "02:42:0a:0a:02:0a",
+      "hostname": "grid-centre",
+      "protocols": "IEC_104",
+      "inferred_role": "Grid_Master",
+      "approved": 1,
+      "first_seen": "2026-10-23T06:00:00+00:00",
+      "last_seen": "2026-10-23T17:59:40+00:00",
+      "packet_count": 2160,
+      "notes": "Target of observed session"
+    }
+  ]
+}

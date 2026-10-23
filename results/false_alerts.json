@@ -1,0 +1,8 @@
+{
+  "held_out_sim_hours": 1.0,
+  "held_out_events_count": 1836,
+  "false_alerts_count": 0,
+  "false_alarm_rate_pct": 0.0,
+  "false_alerts_per_hour": 0,
+  "target_under_5_pct": true
+}
