@@ -4,13 +4,19 @@ Attacker (10.10.1.99) writes 0 kW to inverter-2 active-power-limit set-point (re
 Expected detection: "inverter-2 set-point written by 10.10.1.99; only 10.10.1.30 is allowed to write it"
 MITRE ATT&CK for ICS: T0836
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from pymodbus.client import ModbusTcpClient
 from sim.common import (
     iso_utc_now, IP_ATTACKER, IP_INVERTER_2,
     PORT_INVERTER_2, REG_ACTIVE_POWER_LIMIT
 )
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s2(target_ip: str = IP_INVERTER_2, target_port: int = PORT_INVERTER_2, sensor_pipeline=None, run_id: str = None) -> dict:
     t0 = iso_utc_now()
@@ -48,5 +54,6 @@ def run_s2(target_ip: str = IP_INVERTER_2, target_port: int = PORT_INVERTER_2, s
     return log_attack_run("S2", IP_ATTACKER, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s2()
+    pipe = get_standalone_pipeline()
+    rec = run_s2(sensor_pipeline=pipe)
     print("S2 executed:", rec)

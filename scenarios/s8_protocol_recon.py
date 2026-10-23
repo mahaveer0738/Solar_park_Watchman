@@ -5,9 +5,15 @@ Expected detection: "10.10.1.99 read 300 distinct registers across 5 devices in 
 Rule + ML detector.
 MITRE ATT&CK for ICS: T0846
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from sim.common import iso_utc_now, IP_ATTACKER
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s8(target_ips: list[str] = None, sensor_pipeline=None, run_id: str = None) -> dict:
     targets = target_ips or ["10.10.1.11", "10.10.1.12", "10.10.1.13", "10.10.1.20"]
@@ -40,5 +46,6 @@ def run_s8(target_ips: list[str] = None, sensor_pipeline=None, run_id: str = Non
     return log_attack_run("S8", IP_ATTACKER, "10.10.1.0/24", desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s8()
+    pipe = get_standalone_pipeline()
+    rec = run_s8(sensor_pipeline=pipe)
     print("S8 executed:", rec)

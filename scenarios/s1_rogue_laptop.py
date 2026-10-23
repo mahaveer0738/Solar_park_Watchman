@@ -4,9 +4,15 @@ Adversary connects an unapproved rogue laptop to the ICR switch and initiates di
 Expected detection: "New device 10.10.1.X (MAC ...) appeared on the control network and has not been approved"
 MITRE ATT&CK for ICS: T0886
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from sim.common import iso_utc_now
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s1(target_ip: str = "10.10.1.11", sensor_pipeline=None, run_id: str = None) -> dict:
     t0 = iso_utc_now()
@@ -43,5 +49,6 @@ def run_s1(target_ip: str = "10.10.1.11", sensor_pipeline=None, run_id: str = No
     return log_attack_run("S1", rogue_ip, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s1()
+    pipe = get_standalone_pipeline()
+    rec = run_s1(sensor_pipeline=pipe)
     print("S1 executed:", rec)

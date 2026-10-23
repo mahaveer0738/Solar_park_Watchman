@@ -4,13 +4,19 @@ Adversary sends Single Command (Type 45) to substation breaker IOA 1000 from non
 Expected detection: "Control command to breaker point 1000 came from 10.10.1.99; only the grid control centre master 10.10.2.10 may send commands"
 MITRE ATT&CK for ICS: T0855
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from sim.common import (
     iso_utc_now, IP_ATTACKER, IP_IEC104_OUTSTATION,
     PORT_IEC104, IOA_BREAKER_POINT, ASDU_C_SC_NA_1
 )
 from sim.iec104 import IEC104Client
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s6(target_ip: str = IP_IEC104_OUTSTATION, target_port: int = PORT_IEC104, sensor_pipeline=None, run_id: str = None) -> dict:
     t0 = iso_utc_now()
@@ -47,5 +53,6 @@ def run_s6(target_ip: str = IP_IEC104_OUTSTATION, target_port: int = PORT_IEC104
     return log_attack_run("S6", IP_ATTACKER, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s6()
+    pipe = get_standalone_pipeline()
+    rec = run_s6(sensor_pipeline=pipe)
     print("S6 executed:", rec)

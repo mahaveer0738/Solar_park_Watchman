@@ -348,7 +348,7 @@ def run_evaluation(speedup: float = 60.0, iterations_per_scenario: int = 5):
 | **False Alarms** | False alerts on 1h held-out clean traffic | < 5.0% | **{false_alarm_rate_pct}%** ({false_alerts_per_hour}/hr) | **PASS** |
 | **Detection Latency** | Alert time minus attack injection timestamp | < 15 minutes (900s) | **Median: {median_lat:.3f}s, p95: {p95_lat:.3f}s** | **PASS** |
 | **No Impact on Control** | SCADA polling success & p95 RTT with sensor ON vs OFF | 100% success, ΔRTT ~0 | **Success: 100%, ΔRTT: {latency_overhead['rtt_increase_ms']} ms** | **PASS** |
-| **Upstream Bandwidth** | Bytes transmitted by sensor to Central | < 50 KB/hour | **{upstream_bandwidth['kb_per_hour']} KB/hour** | **PASS** |
+| **Upstream Bandwidth** | Bytes transmitted by sensor to Central | < 50 KB/hour | **{upstream_bandwidth['kb_per_simulated_hour']} KB/hour** | **PASS** |
 
 ---
 

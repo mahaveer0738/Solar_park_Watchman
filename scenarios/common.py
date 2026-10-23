@@ -4,12 +4,27 @@ Logs each attack run to runs/attack_log.jsonl.
 """
 import json
 import os
+import sys
 import time
 import uuid
+from pathlib import Path
 from typing import Optional
+
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 from sim.common import iso_utc_now
 
 ATTACK_LOG_FILE = "runs/attack_log.jsonl"
+
+def get_standalone_pipeline():
+    """Return a WatchmanSensorEngine writing directly to runs/alerts.jsonl."""
+    from sensor.engine import WatchmanSensorEngine
+    return WatchmanSensorEngine(
+        db_path="data/inventory.db",
+        alerts_path="runs/alerts.jsonl"
+    )
 
 def log_attack_run(
     scenario: str,

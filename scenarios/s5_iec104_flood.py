@@ -5,10 +5,16 @@ Expected detection: "IEC-104 outstation received 40x its normal packet rate in 6
 Rule + ML detector.
 MITRE ATT&CK for ICS: T0814
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from sim.common import iso_utc_now, IP_ATTACKER, IP_IEC104_OUTSTATION, PORT_IEC104
 from sim.iec104 import build_apdu_u
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s5(target_ip: str = IP_IEC104_OUTSTATION, target_port: int = PORT_IEC104, sensor_pipeline=None, run_id: str = None) -> dict:
     t0 = iso_utc_now()
@@ -39,5 +45,6 @@ def run_s5(target_ip: str = IP_IEC104_OUTSTATION, target_port: int = PORT_IEC104
     return log_attack_run("S5", IP_ATTACKER, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s5()
+    pipe = get_standalone_pipeline()
+    rec = run_s5(sensor_pipeline=pipe)
     print("S5 executed:", rec)

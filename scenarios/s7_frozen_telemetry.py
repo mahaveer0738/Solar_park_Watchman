@@ -6,9 +6,15 @@ Expected detection: "inverter-1 reported identical power for 20 minutes while ir
 ML + physical consistency check.
 MITRE ATT&CK for ICS: T0830
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from sim.common import iso_utc_now, IP_INVERTER_1, IP_PLC
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s7(target_ip: str = IP_INVERTER_1, sensor_pipeline=None, run_id: str = None) -> dict:
     t0 = iso_utc_now()
@@ -53,5 +59,6 @@ def run_s7(target_ip: str = IP_INVERTER_1, sensor_pipeline=None, run_id: str = N
     return log_attack_run("S7", target_ip, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s7()
+    pipe = get_standalone_pipeline()
+    rec = run_s7(sensor_pipeline=pipe)
     print("S7 executed:", rec)

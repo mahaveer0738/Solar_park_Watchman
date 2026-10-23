@@ -4,10 +4,16 @@ Vendor gateway (10.10.1.50) executes a write operation outside its approved wind
 Expected detection: "Vendor gateway sent writes at 02:10; its approved window is 10:00 to 16:00"
 MITRE ATT&CK for ICS: T0885
 """
+import sys
+from pathlib import Path
+_ROOT = str(Path(__file__).resolve().parent.parent)
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
 import time
 from datetime import datetime, timezone
 from sim.common import iso_utc_now, IP_VENDOR_GW, IP_INVERTER_1, PORT_INVERTER_1, REG_ACTIVE_POWER_LIMIT
-from scenarios.common import log_attack_run
+from scenarios.common import log_attack_run, get_standalone_pipeline
 
 def run_s3(target_ip: str = IP_INVERTER_1, target_port: int = PORT_INVERTER_1, sensor_pipeline=None, run_id: str = None) -> dict:
     # Simulated out-of-hours timestamp: 02:10 UTC
@@ -37,5 +43,6 @@ def run_s3(target_ip: str = IP_INVERTER_1, target_port: int = PORT_INVERTER_1, s
     return log_attack_run("S3", IP_VENDOR_GW, target_ip, desc, t0, t1, run_id)
 
 if __name__ == "__main__":
-    rec = run_s3()
+    pipe = get_standalone_pipeline()
+    rec = run_s3(sensor_pipeline=pipe)
     print("S3 executed:", rec)
