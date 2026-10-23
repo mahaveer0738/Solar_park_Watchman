@@ -4,9 +4,10 @@
 [![Tests](https://img.shields.io/badge/pytest-20%20passed-brightgreen.svg)]()
 [![Evaluation](https://img.shields.io/badge/attack%20detection-30%2F30%20(100%25)-success.svg)]()
 [![Compliance](https://img.shields.io/badge/CEA%202026-Ready-green.svg)]()
+[![Repository](https://img.shields.io/badge/GitHub-mahaveer0738%2FSolar__park__Watchman-181717.svg?logo=github)](https://github.com/mahaveer0738/Solar_park_Watchman)
 
 > **Part B Engineering Prototype · Cognton AI Full-Time Hiring Exercise**  
-> Baseline Reference Design: [`docs/REPORT_PART_A.md`](docs/REPORT_PART_A.md) · Specification: [`docs/ASSIGNMENT_SPEC.md`](docs/ASSIGNMENT_SPEC.md)
+> Baseline Reference Design: [`docs/REPORT_PART_A.md`](docs/REPORT_PART_A.md) · Specification: [`docs/ASSIGNMENT_SPEC.md`](docs/ASSIGNMENT_SPEC.md) · GitHub: [mahaveer0738/Solar_park_Watchman](https://github.com/mahaveer0738/Solar_park_Watchman)
 
 ---
 
