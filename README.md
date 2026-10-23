@@ -16,41 +16,51 @@
 The **Solar Park Watchman** is a passive edge network sensor designed for Inverter Control Rooms (ICR) in utility-scale solar parks (e.g. western Gujarat). It passively monitors Modbus TCP and IEC 60870-5-104 control traffic, dynamically discovers and classifies assets into an SQLite inventory, enforces deterministic security policies, runs unsupervised anomaly detection on per-device feature vectors, and streams structured plain-language alerts to a central dashboard.
 
 ```mermaid
-graph TD
-    subgraph Grid Network [10.10.2.0/24]
-        GC[Grid Control Centre Master<br/>10.10.2.10]
+flowchart TD
+    subgraph GridNet ["Grid Network (10.10.2.0/24)"]
+        GC["Grid Control Centre Master<br/>10.10.2.10"]
     end
 
-    subgraph ICR Control Network [10.10.1.0/24]
-        SCADA[Plant SCADA Poller<br/>10.10.1.10]
-        PPC[Plant Power Controller<br/>10.10.1.30]
-        VGW[Vendor Support Gateway<br/>10.10.1.50]
-        PLC[Plant Master PLC<br/>10.10.1.20]
-        WTH[Weather Sensor Feed<br/>10.10.1.25]
-        INV1[Solar Inverter 1<br/>10.10.1.11]
-        INV2[Solar Inverter 2<br/>10.10.1.12]
-        INV3[Solar Inverter 3<br/>10.10.1.13]
-        RTU[Substation RTU Outstation<br/>10.10.1.40]
-        ATK[Adversary Node<br/>10.10.1.99]
+    subgraph ICRNet ["ICR Control Network (10.10.1.0/24)"]
+        SCADA["Plant SCADA Poller<br/>10.10.1.10"]
+        PPC["Power Plant Controller<br/>10.10.1.30"]
+        VGW["Vendor Support Gateway<br/>10.10.1.50"]
+        PLC["Plant Master PLC<br/>10.10.1.20"]
+        WTH["Weather Sensor Feed<br/>10.10.1.25"]
+        INV1["Solar Inverter 1<br/>10.10.1.11"]
+        INV2["Solar Inverter 2<br/>10.10.1.12"]
+        INV3["Solar Inverter 3<br/>10.10.1.13"]
+        RTU["Substation RTU Outstation<br/>10.10.1.40"]
+        ATK["Adversary Node<br/>10.10.1.99"]
+        SW["Switch SPAN / Mirror Port"]
     end
 
-    subgraph Monitoring & Central
-        SW[(Switch Mirror / TAP)]
-        SENSOR[Passive Sensor<br/>Watchman Core]
-        CENTRAL[Central Collector<br/>10.10.1.5:8000]
-        DASH[Streamlit Dashboard<br/>:8501]
+    subgraph MonitorNet ["Monitoring & Central"]
+        SENSOR["Passive Sensor<br/>Watchman Core (Rx-Only)"]
+        CENTRAL["Central Collector<br/>10.10.1.5:8000"]
+        DASH["Streamlit Dashboard<br/>:8501"]
     end
 
-    GC <-->|IEC-104 Telemetry / Commands| RTU
-    WTH -->|Irradiance / Temp| PLC
-    SCADA -->|Cyclic Modbus Polls 2-5s| INV1 & INV2 & INV3 & PLC
-    PPC -->|Authorized Writes Reg 101| INV1 & INV2 & INV3
-    VGW -.->|Routine Maint Reads 10:00-16:00| INV1 & PLC
-    ATK -.->|Hostile Scenarios S1-S8| ICR Control Network
+    GC <-->|"IEC-104 Telemetry / Commands"| RTU
+    WTH -->|"Irradiance & Temp"| PLC
+    SCADA -->|"Cyclic Modbus Polls (2-5s)"| PLC
+    SCADA -->|"Cyclic Polls"| INV1
+    SCADA -->|"Cyclic Polls"| INV2
+    SCADA -->|"Cyclic Polls"| INV3
+    PPC -->|"Authorized Writes (Reg 101)"| INV1
+    PPC -->|"Authorized Writes (Reg 101)"| INV2
+    PPC -->|"Authorized Writes (Reg 101)"| INV3
+    VGW -.->|"Maint Reads (10:00-16:00)"| INV1
+    ATK -.->|"Hostile Attacks (S1-S8)"| INV2
 
-    ICR Control Network -.->|Promiscuous Copy / SPAN| SW
-    SW -->|Passive Rx Only| SENSOR
-    SENSOR -->|Store & Forward Alerts| CENTRAL
+    SCADA -.->|"Mirrored Traffic"| SW
+    INV1 -.->|"Mirrored Traffic"| SW
+    INV2 -.->|"Mirrored Traffic"| SW
+    RTU -.->|"Mirrored Traffic"| SW
+    ATK -.->|"Mirrored Traffic"| SW
+
+    SW ==>|"Promiscuous Copy (Rx-Only)"| SENSOR
+    SENSOR -->|"Store & Forward Alerts"| CENTRAL
     CENTRAL --> DASH
 ```
 
