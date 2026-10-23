@@ -98,14 +98,20 @@ def cmd_down():
         os.remove(PID_FILE)
     print("[+] All services stopped.")
 
+def cmd_test():
+    print("[+] Running full test suite...")
+    subprocess.run([sys.executable, "-m", "pytest", "tests/", "-v"])
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python make.py [up|attacks|evaluate|demo|down]")
+        print("Usage: python make.py [up|test|attacks|evaluate|demo|down]")
         sys.exit(1)
 
     cmd = sys.argv[1].lower()
     if cmd == "up":
         cmd_up()
+    elif cmd == "test":
+        cmd_test()
     elif cmd == "attacks":
         cmd_attacks()
     elif cmd == "evaluate":
@@ -115,7 +121,7 @@ def main():
     elif cmd == "down":
         cmd_down()
     else:
-        print(f"Unknown command: {cmd}. Choose from [up, attacks, evaluate, demo, down]")
+        print(f"Unknown command: {cmd}. Choose from [up, test, attacks, evaluate, demo, down]")
         sys.exit(1)
 
 if __name__ == "__main__":
